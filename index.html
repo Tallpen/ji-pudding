@@ -200,7 +200,7 @@
     <div class="ticket-top">
       <div class="ticket-label">Handmade Pudding Coupon</div>
       <div class="ticket-title">吉的寶手作布丁<br>兌換一份</div>
-      <div class="ticket-desc">憑券可兌換手作布丁12份，無使用期限。<br>惟布丁皆為手工製作，請至少於三天前預訂，確認可製作後再按下兌換券。</div>
+      <div class="ticket-desc">憑券可兌換手作布丁9份，無使用期限。<br>惟布丁皆為手工製作，請至少於三天前預訂，經吉的寶確認可製作後再按下兌換券。</div>
       <!-- 每張兌換後顯示的特別訊息 -->
       <div class="ticket-message" id="ticket-message"></div>
     </div>
@@ -209,7 +209,7 @@
       <div class="counter-label">剩餘張數</div>
       <div class="counter-display">
         <span class="counter-num" id="counter-num">—</span>
-        <span class="counter-total">/ 10</span>
+        <span class="counter-total">/ 9</span>
       </div>
     </div>
 
@@ -235,7 +235,7 @@
     <div class="admin-header">⚙️ 管理員：調整已兌換張數</div>
     <div class="admin-body">
       <div class="admin-label">設定已兌換張數（目前：<span id="admin-current">0</span> 張）</div>
-      <input type="range" class="admin-slider" id="admin-slider" min="0" max="10" value="0" oninput="document.getElementById('admin-preview').textContent=this.value" />
+      <input type="range" class="admin-slider" id="admin-slider" min="0" max="9" value="0" oninput="document.getElementById('admin-preview').textContent=this.value" />
       <div class="admin-value">已兌換 <span id="admin-preview">0</span> 張</div>
       <button class="admin-btn" onclick="adminSetUsed()">確認調整</button>
     </div>
@@ -261,7 +261,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getDatabase, ref, onValue, runTransaction, push, set, query, orderByChild } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
-  const TOTAL = 10;
+  const TOTAL = 9;
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // 每張兌換後顯示的特別訊息（自行編輯）
@@ -276,7 +276,6 @@
     7:  '第 7 張：在這裡填上你想說的話 🎈',
     8:  '第 8 張：在這裡填上你想說的話 🌈',
     9:  '第 9 張：在這裡填上你想說的話 💛',
-    10: '第 10 張：在這裡填上你想說的話 🎉',
   };
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -368,7 +367,7 @@
       const btn = document.getElementById('redeem-btn');
       if (remaining === 0) {
         btn.disabled = true;
-        btn.textContent = '10 張已全數兌換完畢 🎉';
+        btn.textContent = '9 張已全數兌換完畢 🎉';
       } else {
         btn.disabled = false;
         btn.textContent = `兌換一張布丁券（剩 ${remaining} 張）`;
