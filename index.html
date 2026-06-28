@@ -555,13 +555,28 @@
   }
   window.saveConfig = saveConfig;
 
+  // ── Auto-setup from URL params ──
+  function tryAutoSetup() {
+    const params = new URLSearchParams(window.location.search);
+    const apiKey = params.get("k");
+    const projectId = params.get("p");
+    const dbUrl = params.get("d");
+    if (apiKey && projectId && dbUrl) {
+      localStorage.setItem("pudding_config", JSON.stringify({ apiKey, projectId, dbUrl: atob(dbUrl) }));
+      window.history.replaceState({}, "", window.location.pathname);
+      return true;
+    }
+    return false;
+  }
+
   // ── Init ──
+  tryAutoSetup();
   const config = getConfig();
-  const loadingEl = document.getElementById('loading');
+  const loadingEl = document.getElementById("loading");
 
   if (!config) {
-    loadingEl.classList.add('hidden');
-    document.getElementById('setup-screen').style.display = 'block';
+    loadingEl.classList.add("hidden");
+    document.getElementById("setup-screen").style.display = "block";
   } else {
     startApp(config);
   }
