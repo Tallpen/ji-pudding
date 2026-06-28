@@ -109,7 +109,7 @@
   .admin-btn { width: 100%; background: var(--caramel); color: var(--cream); border: none; border-radius: 8px; padding: 10px; font-family: 'Noto Sans TC', sans-serif; font-size: 14px; cursor: pointer; transition: background 0.15s; }
   .admin-btn:hover { background: var(--brown-light); }
 
-  /* ── Confirm / Select dialog ── */
+  /* ── Confirm dialog ── */
   .dialog-overlay { display: none; position: fixed; inset: 0; background: rgba(61,43,14,0.45); z-index: 300; align-items: center; justify-content: center; padding: 1rem; }
   .dialog-overlay.show { display: flex; }
   .dialog { background: var(--white); border-radius: 20px; border: 1.5px solid var(--border); padding: 1.75rem 1.5rem; max-width: 320px; width: 100%; box-shadow: 0 16px 48px rgba(61,43,14,0.2); }
@@ -121,9 +121,6 @@
   .dialog-cancel:hover { background: var(--border); }
   .dialog-confirm { flex: 1; background: var(--caramel); color: var(--cream); border: none; border-radius: 10px; padding: 11px; font-family: 'Noto Sans TC', sans-serif; font-size: 14px; cursor: pointer; transition: background 0.15s; }
   .dialog-confirm:hover { background: var(--brown-light); }
-
-  /* 選擇數量下拉選單樣式 */
-  .pudding-select { width: 100%; padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--cream); font-family: 'Noto Sans TC', sans-serif; font-size: 15px; color: var(--text); outline: none; margin-top: 10px; text-align: center; }
 
   /* ── Toast ── */
   .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--brown); color: var(--cream); border-radius: 30px; padding: 10px 20px; font-size: 14px; white-space: nowrap; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 200; box-shadow: 0 4px 16px rgba(61,43,14,0.25); }
@@ -196,6 +193,7 @@
   <div class="header">
     <span class="pudding-icon">🍮</span>
     <div class="brand">吉的寶手作布丁</div>
+    <!-- <div class="subtitle">手作兌換券</div> -->
   </div>
 
   <div class="ticket">
@@ -203,6 +201,7 @@
       <div class="ticket-label">Handmade Pudding Coupon</div>
       <div class="ticket-title">吉的寶手作布丁</div>
       <div class="ticket-desc"> - 憑券可兌換手作布丁9份，無使用期限。<br> - 考量製作成本，每次兌換需至少3個布丁<br> - 布丁皆為一人手工製作，請至少於三天前預訂，經吉的寶確認可製作後再按下兌換券。</div>
+      <!-- 每張兌換後顯示的特別訊息 -->
       <div class="ticket-message" id="ticket-message"></div>
     </div>
 
@@ -220,7 +219,7 @@
     </div>
 
     <div class="action-section">
-      <button class="redeem-btn" id="redeem-btn" disabled onclick="askCount()">
+      <button class="redeem-btn" id="redeem-btn" disabled onclick="askRedeem()">
         讀取中…
       </button>
     </div>
@@ -231,6 +230,7 @@
     <div id="history-list"></div>
   </div>
 
+  <!-- 管理員面板 -->
   <div class="admin-panel" id="admin-panel">
     <div class="admin-header">⚙️ 管理員：調整已兌換張數</div>
     <div class="admin-body">
@@ -242,28 +242,14 @@
   </div>
 </div>
 
-<div class="dialog-overlay" id="count-dialog">
-  <div class="dialog">
-    <div class="dialog-icon">🍽️</div>
-    <div class="dialog-title">請選擇兌換張數</div>
-    <div class="dialog-body">
-      每次兌換最低需選擇 3 張。<br>（若剩餘不足 3 張則需全數兌換）
-      <select id="pudding-count-select" class="pudding-select"></select>
-    </div>
-    <div class="dialog-btns">
-      <button class="dialog-cancel" onclick="closeCountDialog()">取消</button>
-      <button class="dialog-confirm" onclick="askRedeem()">下一步</button>
-    </div>
-  </div>
-</div>
-
+<!-- 確認兌換彈窗 -->
 <div class="dialog-overlay" id="confirm-dialog">
   <div class="dialog">
     <div class="dialog-icon">🍮</div>
     <div class="dialog-title">確定要兌換嗎？</div>
-    <div class="dialog-body" id="confirm-dialog-body">請問您確定要兌換嗎？<br>一經兌換，不可取消。</div>
+    <div class="dialog-body">請問您確定要兌換嗎？<br>一經兌換，不可取消。</div>
     <div class="dialog-btns">
-      <button class="dialog-cancel" onclick="closeConfirmDialog()">返回修改</button>
+      <button class="dialog-cancel" onclick="closeDialog()">取消</button>
       <button class="dialog-confirm" onclick="confirmRedeem()">確認兌換</button>
     </div>
   </div>
@@ -276,8 +262,6 @@
   import { getDatabase, ref, onValue, runTransaction, push, set, query, orderByChild } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
   const TOTAL = 9;
-  let currentRemaining = 0; // 追蹤當前剩餘張數
-  let selectedCount = 3;    // 紀錄使用者選了幾張
 
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   // 每張兌換後顯示的特別訊息（自行編輯）
@@ -353,13 +337,13 @@
     onValue(couponRef, (snap) => {
       const data = snap.val() || { used: 0 };
       const used = data.used || 0;
-      currentRemaining = TOTAL - used;
+      const remaining = TOTAL - used;
 
       loadingEl.classList.add('hidden');
       document.getElementById('main-app').style.display = 'block';
-      document.getElementById('counter-num').textContent = currentRemaining;
+      document.getElementById('counter-num').textContent = remaining;
 
-      // 更新訊息顯示（顯示最新被兌換的那張訊息）
+      // Update message display based on how many used
       const msgEl = document.getElementById('ticket-message');
       if (used > 0 && MESSAGES[used]) {
         msgEl.textContent = MESSAGES[used];
@@ -381,12 +365,12 @@
 
       // Update button
       const btn = document.getElementById('redeem-btn');
-      if (currentRemaining === 0) {
+      if (remaining === 0) {
         btn.disabled = true;
         btn.textContent = '9 張已全數兌換完畢 🎉';
       } else {
         btn.disabled = false;
-        btn.textContent = `兌換布丁券（剩 ${currentRemaining} 張）`;
+        btn.textContent = `兌換布丁券（剩 ${remaining} 張）`;
       }
 
       // Admin slider sync
@@ -397,7 +381,7 @@
       }
     });
 
-    // ── Listen history ──
+    // ── Listen history (all records, newest first) ──
     onValue(historyRef, (snap) => {
       const items = [];
       snap.forEach(child => items.push(child.val()));
@@ -420,11 +404,63 @@
       }
     });
 
-    // ── 步驟一：打開選擇數量視窗 ──
-    window.askCount = function() {
-      if (currentRemaining <= 0) return;
-      
-      const selectEl = document.getElementById('pudding-count-select');
-      selectEl.innerHTML = '';
+    // ── Confirm dialog ──
+    window.askRedeem = function() {
+      document.getElementById('confirm-dialog').classList.add('show');
+    };
 
-      if (currentRemaining < 3) {
+    window.closeDialog = function() {
+      document.getElementById('confirm-dialog').classList.remove('show');
+    };
+
+    window.confirmRedeem = async function() {
+      closeDialog();
+      const btn = document.getElementById('redeem-btn');
+      btn.disabled = true;
+      btn.textContent = '兌換中…';
+
+      let ticketNum = null;
+      try {
+        await runTransaction(couponRef, (current) => {
+          const data = current || { used: 0 };
+          if (data.used >= TOTAL) return;
+          ticketNum = data.used + 1;
+          return { used: data.used + 1 };
+        });
+      } catch(e) {
+        showToast('兌換失敗，請再試一次');
+        return;
+      }
+
+      if (!ticketNum) { showToast('已全部兌換完畢'); return; }
+
+      await push(historyRef, { ticketNum, ts: Date.now() });
+      showToast(`🍮 第 ${ticketNum} 張已兌換！`);
+
+      try {
+        await fetch('https://pudding-bot.vercel.app/api/notify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ticketNum, remaining: TOTAL - ticketNum }),
+        });
+      } catch(e) { console.error('LINE notify failed', e); }
+    };
+
+    // ── Admin: set used count ──
+    window.adminSetUsed = async function() {
+      const val = parseInt(document.getElementById('admin-slider').value);
+      await set(couponRef, { used: val });
+      showToast(`已調整為兌換 ${val} 張`);
+    };
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+  window.showToast = showToast;
+</script>
+</body>
+</html>
