@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>吉的寶手作布丁兌換券</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght=400;600&family=Noto+Sans+TC:wght=400;500&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -55,7 +55,6 @@
   .ticket-title { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 600; color: var(--brown); line-height: 1.4; }
   .ticket-desc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.6; }
 
-  /* 每張兌換的特別訊息 */
   .ticket-message {
     margin-top: 10px;
     padding: 8px 12px;
@@ -81,7 +80,6 @@
   .dot { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .dot.active { background: var(--caramel-pale); border-color: var(--caramel-light); }
   .dot.used { background: var(--cream-dark); border-color: var(--border); opacity: 0.45; transform: scale(0.9); }
-  @keyframes stamp { 0% { transform: scale(1.4); opacity: 0.7; } 100% { transform: scale(0.9); opacity: 0.45; } }
 
   .action-section { padding: 1.25rem 1.5rem; }
   .redeem-btn { width: 100%; background: var(--caramel); color: #FDF6E3; border: none; border-radius: 12px; padding: 14px 20px; font-family: 'Noto Sans TC', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; letter-spacing: 0.04em; transition: background 0.15s, transform 0.1s; }
@@ -92,11 +90,12 @@
   /* ── History ── */
   .history-section { margin-top: 1.5rem; background: var(--white); border-radius: 16px; border: 1.5px solid var(--border); overflow: hidden; box-shadow: 0 4px 16px var(--shadow); }
   .history-header { padding: 1rem 1.25rem 0.75rem; border-bottom: 1px solid var(--cream-dark); font-size: 13px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.04em; }
-  .history-item { padding: 10px 1.25rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--cream-dark); font-size: 13px; animation: fadeIn 0.3s ease; }
+  .history-item { padding: 12px 1.25rem; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--cream-dark); font-size: 13px; animation: fadeIn 0.3s ease; }
   .history-item:last-child { border-bottom: none; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-  .history-badge { background: var(--caramel-pale); color: var(--caramel); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border); }
-  .history-time { color: var(--text-muted); font-size: 12px; }
+  .history-text { color: var(--brown); line-height: 1.5; flex: 1; padding-right: 12px; }
+  .history-text strong { color: var(--caramel); font-weight: 600; }
+  .history-time { color: var(--text-muted); font-size: 12px; white-space: nowrap; margin-top: 2px; }
 
   /* ── Admin panel ── */
   .admin-panel { margin-top: 1.5rem; background: var(--white); border-radius: 16px; border: 1.5px solid var(--caramel); overflow: hidden; box-shadow: 0 4px 16px var(--shadow); display: none; }
@@ -122,11 +121,16 @@
   .dialog-confirm { flex: 1; background: var(--caramel); color: var(--cream); border: none; border-radius: 10px; padding: 11px; font-family: 'Noto Sans TC', sans-serif; font-size: 14px; cursor: pointer; transition: background 0.15s; }
   .dialog-confirm:hover { background: var(--brown-light); }
 
-  /* ── Qty selector ── */
+  /* ── Qty selector & Memo ── */
   .qty-selector { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 1rem; }
   .qty-btn { width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--cream); color: var(--text); font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .qty-btn:hover { border-color: var(--caramel-light); background: var(--caramel-pale); }
   .qty-btn.selected { background: var(--caramel); border-color: var(--caramel); color: var(--cream); }
+  
+  .memo-area { margin-top: 1.25rem; text-align: left; }
+  .memo-input { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--cream); font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text); resize: none; height: 60px; outline: none; transition: border-color 0.15s; }
+  .memo-input:focus { border-color: var(--caramel); }
+  .memo-hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
 
   /* ── Toast ── */
   .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--brown); color: var(--cream); border-radius: 30px; padding: 10px 20px; font-size: 14px; white-space: nowrap; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 200; box-shadow: 0 4px 16px rgba(61,43,14,0.25); }
@@ -159,7 +163,7 @@
 
 <div class="loading" id="loading">
   <span class="loading-icon">🍮</span>
-  <p class="loading-text">載入中…</p>
+  <p class="loading-text" id="loading-text">載入中…</p>
 </div>
 
 <div class="setup-screen" id="setup-screen">
@@ -207,7 +211,6 @@
       <div class="ticket-label">Handmade Pudding Coupon</div>
       <div class="ticket-title">吉的寶手作布丁</div>
       <div class="ticket-desc"> - 憑券可兌換手作布丁10份，無使用期限。<br> - 考量製作成本，每次兌換需至少2個布丁<br> - 布丁皆為一人手工製作，請至少於三天前預訂，經吉的寶確認可製作後再按下兌換券。</div>
-      <!-- 每張兌換後顯示的特別訊息 -->
       <div class="ticket-message" id="ticket-message"></div>
     </div>
 
@@ -236,7 +239,6 @@
     <div id="history-list"></div>
   </div>
 
-  <!-- 管理員面板 -->
   <div class="admin-panel" id="admin-panel">
     <div class="admin-header">⚙️ 管理員：調整已兌換張數</div>
     <div class="admin-body">
@@ -244,25 +246,30 @@
       <input type="range" class="admin-slider" id="admin-slider" min="0" max="10" value="0" oninput="document.getElementById('admin-preview').textContent=this.value" />
       <div class="admin-value">已兌換 <span id="admin-preview">0</span> 張</div>
       <button class="admin-btn" onclick="adminSetUsed()">確認調整</button>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:8px; text-align:center;">註：若將張數調整回 0 張，將會一併清除下方歷史紀錄。</div>
     </div>
   </div>
 </div>
 
-<!-- Step 1：選張數 -->
 <div class="dialog-overlay" id="select-dialog">
   <div class="dialog">
     <div class="dialog-icon">🍮</div>
     <div class="dialog-title">要兌換幾張？</div>
     <div class="dialog-body" id="select-dialog-body">請選擇本次兌換張數</div>
     <div class="qty-selector" id="qty-selector"></div>
-    <div class="dialog-btns" style="margin-top:1rem">
+    
+    <div class="memo-area">
+      <textarea id="memo-input" class="memo-input" placeholder="請備註您想要的口味調整..."></textarea>
+      <div class="memo-hint">若無則依照吉的寶配方作業</div>
+    </div>
+
+    <div class="dialog-btns" style="margin-top:1.25rem">
       <button class="dialog-cancel" onclick="closeDialog()">取消</button>
       <button class="dialog-confirm" id="select-next-btn" onclick="goToConfirm()">下一步</button>
     </div>
   </div>
 </div>
 
-<!-- Step 2：確認 -->
 <div class="dialog-overlay" id="confirm-dialog">
   <div class="dialog">
     <div class="dialog-icon">🍮</div>
@@ -279,13 +286,11 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getDatabase, ref, onValue, runTransaction, push, set, query, orderByChild } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+  import { getDatabase, ref, onValue, runTransaction, push, set } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
   const TOTAL = 10;
+  let globalRemaining = 0; // 用於全域追蹤正確的剩餘張數
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // 每張兌換後顯示的特別訊息（自行編輯）
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const MESSAGES = {
     1:  '第 1 張：在這裡填上你想說的話 🍮',
     2:  '已強迫兌換兩張試吃券 ✨',
@@ -298,11 +303,16 @@
     9:  '第 9 張：在這裡填上你想說的話 💛',
     10: '第 10 張：在這裡填上你想說的話 🎉',
   };
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   function getConfig() {
-    try { return JSON.parse(localStorage.getItem('pudding_config') || 'null'); }
-    catch { return null; }
+    try { 
+      const data = localStorage.getItem('pudding_config');
+      return data ? JSON.parse(data) : null; 
+    } catch(e) { 
+      console.error("Config parse error, resetting config...", e);
+      localStorage.removeItem('pudding_config');
+      return null; 
+    }
   }
 
   function saveConfig() {
@@ -342,8 +352,8 @@
       const app = initializeApp({ apiKey: config.apiKey, projectId: config.projectId, databaseURL: config.dbUrl });
       db = getDatabase(app);
     } catch(e) {
-      loadingEl.classList.add('hidden');
-      document.getElementById('setup-screen').style.display = 'block';
+      console.error("Firebase init failed:", e);
+      document.getElementById('loading-text').textContent = "Firebase 設定有誤，請清除 LocalStorage 後重新設定。";
       return;
     }
 
@@ -359,12 +369,12 @@
       const data = snap.val() || { used: 0 };
       const used = data.used || 0;
       const remaining = TOTAL - used;
+      globalRemaining = remaining; // 寫入全域變數避免 DOM 轉換錯誤
 
       loadingEl.classList.add('hidden');
       document.getElementById('main-app').style.display = 'block';
       document.getElementById('counter-num').textContent = remaining;
 
-      // Update message display based on how many used
       const msgEl = document.getElementById('ticket-message');
       if (used > 0 && MESSAGES[used]) {
         msgEl.textContent = MESSAGES[used];
@@ -373,7 +383,6 @@
         msgEl.classList.remove('show');
       }
 
-      // Update dots
       const grid = document.getElementById('dots-grid');
       grid.innerHTML = '';
       for (let i = 1; i <= TOTAL; i++) {
@@ -384,7 +393,6 @@
         grid.appendChild(dot);
       }
 
-      // Update button
       const btn = document.getElementById('redeem-btn');
       if (remaining === 0) {
         btn.disabled = true;
@@ -394,19 +402,21 @@
         btn.textContent = `兌換布丁券（剩 ${remaining} 張）`;
       }
 
-      // Admin slider sync
       if (isAdmin) {
         document.getElementById('admin-current').textContent = used;
         document.getElementById('admin-slider').value = used;
         document.getElementById('admin-preview').textContent = used;
       }
+    }, (error) => {
+      console.error("Database read error:", error);
+      alert("Firebase 權限不夠或資料庫網址錯誤！請檢查 Realtime Database 的 Rules 是否有開啟讀寫。");
     });
 
-    // ── Listen history (all records, newest first) ──
+    // ── Listen history ──
     onValue(historyRef, (snap) => {
       const items = [];
       snap.forEach(child => items.push(child.val()));
-      items.sort((a, b) => b.ts - a.ts); // newest first
+      items.sort((a, b) => b.ts - a.ts); 
 
       const histSec = document.getElementById('history-section');
       const histList = document.getElementById('history-list');
@@ -415,8 +425,16 @@
         histList.innerHTML = items.map(h => {
           const d = new Date(h.ts);
           const timeStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+          
+          let textHtml = '';
+          if (h.qty) {
+            textHtml = `<strong>${h.qty} 張</strong>${h.memo ? '，備註：' + h.memo : ''}`;
+          } else {
+            textHtml = `<strong>第 ${h.ticketNum} 張</strong>`;
+          }
+
           return `<div class="history-item">
-            <span class="history-badge">第 ${h.ticketNum} 張</span>
+            <span class="history-text">${textHtml}</span>
             <span class="history-time">${timeStr}</span>
           </div>`;
         }).join('');
@@ -425,22 +443,18 @@
       }
     });
 
-    // ── Dialog flow ──
     let selectedQty = null;
-    let currentRemaining = 0;
 
     window.askRedeem = function() {
-      const snap_used = parseInt(document.getElementById('counter-num').textContent) ;
-      currentRemaining = isNaN(snap_used) ? 0 : snap_used;
-      const minQty = Math.min(2, currentRemaining);
-      const maxQty = currentRemaining;
+      const minQty = Math.min(2, globalRemaining);
+      const maxQty = globalRemaining;
 
       if (maxQty === 0) { showToast('已全部兌換完畢'); return; }
 
-      // Build qty buttons
       const selector = document.getElementById('qty-selector');
       selector.innerHTML = '';
       selectedQty = minQty;
+      
       for (let i = minQty; i <= maxQty; i++) {
         const btn = document.createElement('button');
         btn.className = 'qty-btn' + (i === minQty ? ' selected' : '');
@@ -454,8 +468,8 @@
         selector.appendChild(btn);
       }
 
-      document.getElementById('select-dialog-body').textContent =
-        `最少 ${minQty} 張，最多 ${maxQty} 張`;
+      document.getElementById('memo-input').value = '';
+      document.getElementById('select-dialog-body').textContent = `最少 ${minQty} 張，最多 ${maxQty} 張`;
       document.getElementById('select-dialog').classList.add('show');
     };
 
@@ -481,6 +495,7 @@
     window.confirmRedeem = async function() {
       if (!selectedQty) return;
       const qty = selectedQty;
+      const memoText = document.getElementById('memo-input').value.trim();
       closeDialog();
 
       const btn = document.getElementById('redeem-btn');
@@ -491,7 +506,7 @@
       try {
         await runTransaction(couponRef, (current) => {
           const data = current || { used: 0 };
-          if (data.used + qty > TOTAL) return; // abort if not enough
+          if (data.used + qty > TOTAL) return; 
           startTicket = data.used + 1;
           return { used: data.used + qty };
         });
@@ -502,10 +517,11 @@
 
       if (!startTicket) { showToast('張數不足，請重新選擇'); return; }
 
-      // Record each ticket in history
-      for (let i = 0; i < qty; i++) {
-        await push(historyRef, { ticketNum: startTicket + i, ts: Date.now() + i });
-      }
+      await push(historyRef, { 
+        qty: qty, 
+        memo: memoText, 
+        ts: Date.now() 
+      });
 
       const remaining = TOTAL - (startTicket - 1 + qty);
       showToast(`🍮 兌換 ${qty} 張成功！`);
@@ -517,24 +533,29 @@
           body: JSON.stringify({
             ticketNum: `${startTicket}～${startTicket + qty - 1}`,
             remaining,
+            memo: memoText
           }),
         });
       } catch(e) { console.error('LINE notify failed', e); }
     };
 
-    // ── Admin: set used count ──
     window.adminSetUsed = async function() {
       const val = parseInt(document.getElementById('admin-slider').value);
       await set(couponRef, { used: val });
+      if (val === 0) {
+        await set(historyRef, null);
+      }
       showToast(`已調整為兌換 ${val} 張`);
     };
   }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+    if(t) {
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
   }
   window.showToast = showToast;
 </script>
