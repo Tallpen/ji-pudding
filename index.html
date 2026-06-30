@@ -539,7 +539,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            ticketNum: `${startTicket}～${startTicket + qty - 1}`,
+            ticketNum: `${qty}`,
             remaining,
             note: note || '無特殊需求，依吉的寶配方作業。',
           }),
