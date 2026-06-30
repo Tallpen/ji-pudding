@@ -295,12 +295,12 @@
     2:  '已強迫兌換2張試吃券 ✨',
     3:  '第 3 張：在這裡填上你想說的話 🎀',
     4:  '吉的寶已收到訂單，請耐心等候製作 🌸',
-    5:  '第 5 張：在這裡填上你想說的話 ⭐',
+    5:  '吉的寶已收到訂單，請耐心等候製作 🌸',
     6:  '吉的寶正在朝向善菓屋的品質努力... 🍀',
-    7:  '第 7 張：在這裡填上你想說的話 🎈',
-    8:  '黃寶吃布丁，天天都開心 🌈',
-    9:  '第 9 張：在這裡填上你想說的話 💛',
-    10: '您的扣打已用完，29歲生日也終於過完（吉的寶鬆一口氣） 🎉',
+    7:  '吉的寶正在朝向善菓屋的品質努力... 🍀',
+    8:  '黃寶吃布丁，天天都開心 🌈（吉的寶累了）',
+    9:  '黃寶吃布丁，天天都開心 🌈（吉的寶累了）',
+    10: '您的扣打已用完，29歲生日也終於過完 🎉（吉的寶鬆一口氣）',
   };
 
   function getConfig() {
@@ -480,8 +480,10 @@
       document.getElementById('select-dialog').classList.remove('show');
       document.getElementById('confirm-dialog-body').innerHTML =
         `確定兌換 <strong>${selectedQty}</strong> 張布丁券嗎？<br>` +
-        (note ? `備註：${escapeHtml(note)}<br>` : `備註：無特殊需求，依吉的寶配方作業。<br>`) +
+        (note ? `備註：${escapeHtml(note)}<br>` : ``) +
         `一經兌換，不可取消。`;
+        // (note ? `備註：${escapeHtml(note)}<br>` : `備註：無特殊需求，依吉的寶配方作業。<br>`) +
+        // `一經兌換，不可取消。`;
       document.getElementById('confirm-dialog').classList.add('show');
     };
 
