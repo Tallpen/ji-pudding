@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>吉的寶手作布丁兌換券</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght=400;600&family=Noto+Sans+TC:wght=400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -55,17 +55,7 @@
   .ticket-title { font-family: 'Noto Serif TC', serif; font-size: 20px; font-weight: 600; color: var(--brown); line-height: 1.4; }
   .ticket-desc { font-size: 13px; color: var(--text-muted); margin-top: 6px; line-height: 1.6; }
 
-  .ticket-message {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background: var(--white);
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--brown);
-    line-height: 1.6;
-    display: none;
-  }
+  .ticket-message { margin-top: 10px; padding: 8px 12px; background: var(--white); border-radius: 8px; border: 1px solid var(--border); font-size: 13px; color: var(--brown); line-height: 1.6; display: none; }
   .ticket-message.show { display: block; }
 
   .counter-section { padding: 1.25rem 1.5rem 1rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--cream-dark); }
@@ -87,17 +77,18 @@
   .redeem-btn:active:not(:disabled) { transform: scale(0.98); }
   .redeem-btn:disabled { background: var(--cream-dark); color: var(--text-muted); cursor: not-allowed; }
 
-  /* ── History ── */
   .history-section { margin-top: 1.5rem; background: var(--white); border-radius: 16px; border: 1.5px solid var(--border); overflow: hidden; box-shadow: 0 4px 16px var(--shadow); }
-  .history-header { padding: 1rem 1.25rem 0.75rem; border-bottom: 1px solid var(--cream-dark); font-size: 13px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.04em; }
-  .history-item { padding: 12px 1.25rem; display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid var(--cream-dark); font-size: 13px; animation: fadeIn 0.3s ease; }
+  .history-header { padding: 1rem 1.25rem 0.75rem; border-bottom: 1px solid var(--cream-dark); font-size: 13px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.04em; display:flex; justify-content:space-between; align-items:center; }
+  .history-count { font-size: 11px; color: var(--caramel); }
+  .history-item { padding: 10px 1.25rem; border-bottom: 1px solid var(--cream-dark); font-size: 13px; animation: fadeIn 0.3s ease; }
   .history-item:last-child { border-bottom: none; }
+  .history-row1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-  .history-text { color: var(--brown); line-height: 1.5; flex: 1; padding-right: 12px; }
-  .history-text strong { color: var(--caramel); font-weight: 600; }
-  .history-time { color: var(--text-muted); font-size: 12px; white-space: nowrap; margin-top: 2px; }
+  .history-badge { background: var(--caramel-pale); color: var(--caramel); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 20px; border: 1px solid var(--border); }
+  .history-time { color: var(--text-muted); font-size: 12px; }
+  .history-note { color: var(--brown); font-size: 12px; line-height: 1.5; padding-left: 2px; }
+  .history-note-label { color: var(--text-muted); }
 
-  /* ── Admin panel ── */
   .admin-panel { margin-top: 1.5rem; background: var(--white); border-radius: 16px; border: 1.5px solid var(--caramel); overflow: hidden; box-shadow: 0 4px 16px var(--shadow); display: none; }
   .admin-panel.show { display: block; }
   .admin-header { padding: 1rem 1.25rem 0.75rem; border-bottom: 1px solid var(--cream-dark); font-size: 13px; font-weight: 500; color: var(--caramel); letter-spacing: 0.04em; }
@@ -108,10 +99,9 @@
   .admin-btn { width: 100%; background: var(--caramel); color: var(--cream); border: none; border-radius: 8px; padding: 10px; font-family: 'Noto Sans TC', sans-serif; font-size: 14px; cursor: pointer; transition: background 0.15s; }
   .admin-btn:hover { background: var(--brown-light); }
 
-  /* ── Confirm dialog ── */
   .dialog-overlay { display: none; position: fixed; inset: 0; background: rgba(61,43,14,0.45); z-index: 300; align-items: center; justify-content: center; padding: 1rem; }
   .dialog-overlay.show { display: flex; }
-  .dialog { background: var(--white); border-radius: 20px; border: 1.5px solid var(--border); padding: 1.75rem 1.5rem; max-width: 320px; width: 100%; box-shadow: 0 16px 48px rgba(61,43,14,0.2); }
+  .dialog { background: var(--white); border-radius: 20px; border: 1.5px solid var(--border); padding: 1.75rem 1.5rem; max-width: 340px; width: 100%; box-shadow: 0 16px 48px rgba(61,43,14,0.2); max-height: 90vh; overflow-y: auto; }
   .dialog-icon { font-size: 40px; text-align: center; margin-bottom: 0.75rem; }
   .dialog-title { font-family: 'Noto Serif TC', serif; font-size: 17px; font-weight: 600; color: var(--brown); text-align: center; margin-bottom: 6px; }
   .dialog-body { font-size: 13px; color: var(--text-muted); text-align: center; line-height: 1.6; margin-bottom: 1.25rem; }
@@ -121,29 +111,30 @@
   .dialog-confirm { flex: 1; background: var(--caramel); color: var(--cream); border: none; border-radius: 10px; padding: 11px; font-family: 'Noto Sans TC', sans-serif; font-size: 14px; cursor: pointer; transition: background 0.15s; }
   .dialog-confirm:hover { background: var(--brown-light); }
 
-  /* ── Qty selector & Memo ── */
   .qty-selector { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 1rem; }
   .qty-btn { width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--cream); color: var(--text); font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
   .qty-btn:hover { border-color: var(--caramel-light); background: var(--caramel-pale); }
   .qty-btn.selected { background: var(--caramel); border-color: var(--caramel); color: var(--cream); }
-  
-  .memo-area { margin-top: 1.25rem; text-align: left; }
-  .memo-input { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--cream); font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text); resize: none; height: 60px; outline: none; transition: border-color 0.15s; }
-  .memo-input:focus { border-color: var(--caramel); }
-  .memo-hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
 
-  /* ── Toast ── */
+  .note-field { margin-top: 1.25rem; text-align: left; }
+  .note-field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.5; }
+  .note-field textarea {
+    width: 100%; min-height: 70px; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 10px;
+    background: var(--cream); font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text);
+    outline: none; resize: vertical; transition: border-color 0.15s;
+  }
+  .note-field textarea:focus { border-color: var(--caramel); }
+  .note-field textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+
   .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--brown); color: var(--cream); border-radius: 30px; padding: 10px 20px; font-size: 14px; white-space: nowrap; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 200; box-shadow: 0 4px 16px rgba(61,43,14,0.25); }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* ── Loading ── */
   .loading { position: fixed; inset: 0; background: var(--cream); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; transition: opacity 0.4s; }
   .loading.hidden { opacity: 0; pointer-events: none; }
   .loading-icon { font-size: 48px; animation: bounce 1s ease infinite alternate; }
   @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
   .loading-text { margin-top: 12px; font-size: 14px; color: var(--text-muted); }
 
-  /* ── Setup ── */
   .setup-screen { max-width: 420px; margin: 0 auto; display: none; }
   .setup-card { background: var(--white); border-radius: 20px; border: 1.5px solid var(--border); padding: 1.75rem; box-shadow: 0 8px 32px var(--shadow); }
   .setup-card h2 { font-family: 'Noto Serif TC', serif; font-size: 18px; color: var(--brown); margin-bottom: 4px; }
@@ -157,13 +148,15 @@
   .setup-steps { background: var(--caramel-pale); border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem; border: 1px solid var(--border); }
   .setup-steps p { margin-bottom: 0; font-size: 13px; color: var(--brown); line-height: 1.8; }
   .setup-steps a { color: var(--caramel); }
+
+  .debug-box { max-width: 420px; margin: 1.5rem auto 0; background: #fff; border: 1px dashed var(--border); border-radius: 10px; padding: 10px 14px; font-size: 11px; color: var(--text-muted); font-family: monospace; word-break: break-all; }
 </style>
 </head>
 <body>
 
 <div class="loading" id="loading">
   <span class="loading-icon">🍮</span>
-  <p class="loading-text" id="loading-text">載入中…</p>
+  <p class="loading-text">載入中…</p>
 </div>
 
 <div class="setup-screen" id="setup-screen">
@@ -235,10 +228,14 @@
   </div>
 
   <div class="history-section" id="history-section" style="display:none">
-    <div class="history-header">兌換紀錄</div>
+    <div class="history-header">
+      <span>兌換紀錄</span>
+      <span class="history-count" id="history-count"></span>
+    </div>
     <div id="history-list"></div>
   </div>
 
+  <!-- 管理員面板 -->
   <div class="admin-panel" id="admin-panel">
     <div class="admin-header">⚙️ 管理員：調整已兌換張數</div>
     <div class="admin-body">
@@ -246,30 +243,32 @@
       <input type="range" class="admin-slider" id="admin-slider" min="0" max="10" value="0" oninput="document.getElementById('admin-preview').textContent=this.value" />
       <div class="admin-value">已兌換 <span id="admin-preview">0</span> 張</div>
       <button class="admin-btn" onclick="adminSetUsed()">確認調整</button>
-      <div style="font-size:11px; color:var(--text-muted); margin-top:8px; text-align:center;">註：若將張數調整回 0 張，將會一併清除下方歷史紀錄。</div>
     </div>
   </div>
+
+  <!-- Debug 資訊（確認資料庫連線與讀取狀況用） -->
+  <div class="debug-box" id="debug-box"></div>
 </div>
 
+<!-- Step 1：選張數 + 備註 -->
 <div class="dialog-overlay" id="select-dialog">
   <div class="dialog">
     <div class="dialog-icon">🍮</div>
     <div class="dialog-title">要兌換幾張？</div>
     <div class="dialog-body" id="select-dialog-body">請選擇本次兌換張數</div>
     <div class="qty-selector" id="qty-selector"></div>
-    
-    <div class="memo-area">
-      <textarea id="memo-input" class="memo-input" placeholder="請備註您想要的口味調整..."></textarea>
-      <div class="memo-hint">若無則依照吉的寶配方作業</div>
+    <div class="note-field">
+      <label>請備註您想要的口味調整，若無則依照吉的寶配方作業</label>
+      <textarea id="note-input" placeholder="例如：少糖、不要焦糖、想要芒果口味…（無特殊需求可留空）"></textarea>
     </div>
-
-    <div class="dialog-btns" style="margin-top:1.25rem">
+    <div class="dialog-btns" style="margin-top:1rem">
       <button class="dialog-cancel" onclick="closeDialog()">取消</button>
       <button class="dialog-confirm" id="select-next-btn" onclick="goToConfirm()">下一步</button>
     </div>
   </div>
 </div>
 
+<!-- Step 2：確認 -->
 <div class="dialog-overlay" id="confirm-dialog">
   <div class="dialog">
     <div class="dialog-icon">🍮</div>
@@ -289,7 +288,7 @@
   import { getDatabase, ref, onValue, runTransaction, push, set } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 
   const TOTAL = 10;
-  let globalRemaining = 0; // 用於全域追蹤正確的剩餘張數
+  const BUILD_TAG = 'build-2026-07-10-v3'; // 用來確認瀏覽器抓到的是不是最新版
 
   const MESSAGES = {
     1:  '第 1 張：在這裡填上你想說的話 🍮',
@@ -305,14 +304,8 @@
   };
 
   function getConfig() {
-    try { 
-      const data = localStorage.getItem('pudding_config');
-      return data ? JSON.parse(data) : null; 
-    } catch(e) { 
-      console.error("Config parse error, resetting config...", e);
-      localStorage.removeItem('pudding_config');
-      return null; 
-    }
+    try { return JSON.parse(localStorage.getItem('pudding_config') || 'null'); }
+    catch { return null; }
   }
 
   function saveConfig() {
@@ -339,6 +332,8 @@
   const loadingEl = document.getElementById('loading');
   const isAdmin = new URLSearchParams(window.location.search).get('admin') === '1';
 
+  document.getElementById('debug-box').textContent = `版本：${BUILD_TAG}`;
+
   if (!config) {
     loadingEl.classList.add('hidden');
     document.getElementById('setup-screen').style.display = 'block';
@@ -352,8 +347,8 @@
       const app = initializeApp({ apiKey: config.apiKey, projectId: config.projectId, databaseURL: config.dbUrl });
       db = getDatabase(app);
     } catch(e) {
-      console.error("Firebase init failed:", e);
-      document.getElementById('loading-text').textContent = "Firebase 設定有誤，請清除 LocalStorage 後重新設定。";
+      loadingEl.classList.add('hidden');
+      document.getElementById('setup-screen').style.display = 'block';
       return;
     }
 
@@ -364,12 +359,10 @@
       document.getElementById('admin-panel').classList.add('show');
     }
 
-    // ── Listen coupon state ──
     onValue(couponRef, (snap) => {
       const data = snap.val() || { used: 0 };
       const used = data.used || 0;
       const remaining = TOTAL - used;
-      globalRemaining = remaining; // 寫入全域變數避免 DOM 轉換錯誤
 
       loadingEl.classList.add('hidden');
       document.getElementById('main-app').style.display = 'block';
@@ -407,35 +400,32 @@
         document.getElementById('admin-slider').value = used;
         document.getElementById('admin-preview').textContent = used;
       }
-    }, (error) => {
-      console.error("Database read error:", error);
-      alert("Firebase 權限不夠或資料庫網址錯誤！請檢查 Realtime Database 的 Rules 是否有開啟讀寫。");
     });
 
-    // ── Listen history ──
+    // ── 兌換紀錄：每筆都讀，依時間新到舊排序 ──
     onValue(historyRef, (snap) => {
       const items = [];
       snap.forEach(child => items.push(child.val()));
-      items.sort((a, b) => b.ts - a.ts); 
+      items.sort((a, b) => (b.ts || 0) - (a.ts || 0));
 
       const histSec = document.getElementById('history-section');
       const histList = document.getElementById('history-list');
+      const countEl = document.getElementById('history-count');
+
+      countEl.textContent = `共 ${items.length} 筆`;
+
       if (items.length > 0) {
         histSec.style.display = 'block';
         histList.innerHTML = items.map(h => {
-          const d = new Date(h.ts);
+          const d = new Date(h.ts || Date.now());
           const timeStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
-          
-          let textHtml = '';
-          if (h.qty) {
-            textHtml = `<strong>${h.qty} 張</strong>${h.memo ? '，備註：' + h.memo : ''}`;
-          } else {
-            textHtml = `<strong>第 ${h.ticketNum} 張</strong>`;
-          }
-
+          const noteText = h.note && h.note.trim() ? h.note.trim() : '無特殊需求，依吉的寶配方作業';
           return `<div class="history-item">
-            <span class="history-text">${textHtml}</span>
-            <span class="history-time">${timeStr}</span>
+            <div class="history-row1">
+              <span class="history-badge">${h.qty || 1} 張</span>
+              <span class="history-time">${timeStr}</span>
+            </div>
+            <div class="history-note"><span class="history-note-label">備註：</span>${escapeHtml(noteText)}</div>
           </div>`;
         }).join('');
       } else {
@@ -443,18 +433,29 @@
       }
     });
 
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ── Dialog flow ──
     let selectedQty = null;
+    let currentRemaining = 0;
 
     window.askRedeem = function() {
-      const minQty = Math.min(2, globalRemaining);
-      const maxQty = globalRemaining;
+      const snap_used = parseInt(document.getElementById('counter-num').textContent);
+      currentRemaining = isNaN(snap_used) ? 0 : snap_used;
+      const minQty = Math.min(2, currentRemaining);
+      const maxQty = currentRemaining;
 
       if (maxQty === 0) { showToast('已全部兌換完畢'); return; }
 
       const selector = document.getElementById('qty-selector');
       selector.innerHTML = '';
       selectedQty = minQty;
-      
+      document.getElementById('note-input').value = '';
+
       for (let i = minQty; i <= maxQty; i++) {
         const btn = document.createElement('button');
         btn.className = 'qty-btn' + (i === minQty ? ' selected' : '');
@@ -468,16 +469,19 @@
         selector.appendChild(btn);
       }
 
-      document.getElementById('memo-input').value = '';
-      document.getElementById('select-dialog-body').textContent = `最少 ${minQty} 張，最多 ${maxQty} 張`;
+      document.getElementById('select-dialog-body').textContent =
+        `最少 ${minQty} 張，最多 ${maxQty} 張`;
       document.getElementById('select-dialog').classList.add('show');
     };
 
     window.goToConfirm = function() {
       if (!selectedQty) { showToast('請選擇張數'); return; }
+      const note = document.getElementById('note-input').value.trim();
       document.getElementById('select-dialog').classList.remove('show');
       document.getElementById('confirm-dialog-body').innerHTML =
-        `確定兌換 <strong>${selectedQty}</strong> 張布丁券嗎？<br>一經兌換，不可取消。`;
+        `確定兌換 <strong>${selectedQty}</strong> 張布丁券嗎？<br>` +
+        (note ? `備註：${escapeHtml(note)}<br>` : `備註：無特殊需求，依吉的寶配方作業。<br>`) +
+        `一經兌換，不可取消。`;
       document.getElementById('confirm-dialog').classList.add('show');
     };
 
@@ -495,7 +499,7 @@
     window.confirmRedeem = async function() {
       if (!selectedQty) return;
       const qty = selectedQty;
-      const memoText = document.getElementById('memo-input').value.trim();
+      const note = document.getElementById('note-input').value.trim();
       closeDialog();
 
       const btn = document.getElementById('redeem-btn');
@@ -506,7 +510,7 @@
       try {
         await runTransaction(couponRef, (current) => {
           const data = current || { used: 0 };
-          if (data.used + qty > TOTAL) return; 
+          if (data.used + qty > TOTAL) return;
           startTicket = data.used + 1;
           return { used: data.used + qty };
         });
@@ -517,11 +521,13 @@
 
       if (!startTicket) { showToast('張數不足，請重新選擇'); return; }
 
-      await push(historyRef, { 
-        qty: qty, 
-        memo: memoText, 
-        ts: Date.now() 
-      });
+      // 一次兌換 = 一筆紀錄（包含張數與備註）
+      try {
+        await push(historyRef, { qty, note, ts: Date.now(), startTicket });
+      } catch(e) {
+        console.error('history push failed', e);
+        showToast('紀錄寫入失敗，請截圖回報');
+      }
 
       const remaining = TOTAL - (startTicket - 1 + qty);
       showToast(`🍮 兌換 ${qty} 張成功！`);
@@ -533,7 +539,7 @@
           body: JSON.stringify({
             ticketNum: `${startTicket}～${startTicket + qty - 1}`,
             remaining,
-            memo: memoText
+            note: note || '無特殊需求，依吉的寶配方作業。',
           }),
         });
       } catch(e) { console.error('LINE notify failed', e); }
@@ -542,20 +548,15 @@
     window.adminSetUsed = async function() {
       const val = parseInt(document.getElementById('admin-slider').value);
       await set(couponRef, { used: val });
-      if (val === 0) {
-        await set(historyRef, null);
-      }
       showToast(`已調整為兌換 ${val} 張`);
     };
   }
 
   function showToast(msg) {
     const t = document.getElementById('toast');
-    if(t) {
-      t.textContent = msg;
-      t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
-    }
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
   }
   window.showToast = showToast;
 </script>
