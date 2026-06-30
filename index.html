@@ -196,14 +196,14 @@
   <div class="header">
     <span class="pudding-icon">🍮</span>
     <div class="brand">吉的寶手作布丁</div>
-    <div class="subtitle">手作兌換券</div>
+    <!-- <div class="subtitle">手作兌換券</div> -->
   </div>
 
   <div class="ticket">
     <div class="ticket-top">
       <div class="ticket-label">Handmade Pudding Coupon</div>
       <div class="ticket-title">吉的寶手作布丁</div>
-      <div class="ticket-desc"> - 憑券可兌換手作布丁10份，無使用期限。<br> - 考量製作成本，每次兌換需至少2個布丁<br> - 布丁皆為一人手工製作，請至少於三天前預訂，經吉的寶確認可製作後再按下兌換券。</div>
+      <div class="ticket-desc"> - 憑券可兌換手作布丁10份，無使用期限。<br> - 考量製作成本，每次兌換需至少2個布丁。<br> - 布丁皆為一人手工製作，請至少於三天前預訂，經吉的寶確認可製作後再兌換。</div>
       <div class="ticket-message" id="ticket-message"></div>
     </div>
 
@@ -259,7 +259,7 @@
     <div class="qty-selector" id="qty-selector"></div>
     <div class="note-field">
       <label>請備註您想要的口味調整，若無則依照吉的寶配方作業</label>
-      <textarea id="note-input" placeholder="例如：少糖、不要焦糖、想要芒果口味…（無特殊需求可留空）"></textarea>
+      <textarea id="note-input" placeholder="例如：少糖、不要焦糖…（無特殊需求可留空）"></textarea>
     </div>
     <div class="dialog-btns" style="margin-top:1rem">
       <button class="dialog-cancel" onclick="closeDialog()">取消</button>
@@ -292,15 +292,15 @@
 
   const MESSAGES = {
     1:  '第 1 張：在這裡填上你想說的話 🍮',
-    2:  '已強迫兌換兩張試吃券 ✨',
+    2:  '已強迫兌換2張試吃券 ✨',
     3:  '第 3 張：在這裡填上你想說的話 🎀',
-    4:  '第 4 張：在這裡填上你想說的話 🌸',
+    4:  '吉的寶已收到訂單，請耐心等候製作 🌸',
     5:  '第 5 張：在這裡填上你想說的話 ⭐',
-    6:  '第 6 張：在這裡填上你想說的話 🍀',
+    6:  '吉的寶正在朝向善菓屋的品質努力... 🍀',
     7:  '第 7 張：在這裡填上你想說的話 🎈',
-    8:  '第 8 張：在這裡填上你想說的話 🌈',
+    8:  '黃寶吃布丁，天天都開心 🌈',
     9:  '第 9 張：在這裡填上你想說的話 💛',
-    10: '第 10 張：在這裡填上你想說的話 🎉',
+    10: '您的扣打已用完，29歲生日也終於過完（吉的寶鬆一口氣） 🎉',
   };
 
   function getConfig() {
