@@ -401,7 +401,6 @@
         document.getElementById('admin-preview').textContent = used;
       }
     });
-
     // ── 兌換紀錄：每筆都讀，依時間新到舊排序 ──
     onValue(historyRef, (snap) => {
       const items = [];
@@ -420,9 +419,11 @@
           const d = new Date(h.ts || Date.now());
           const timeStr = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
           const noteText = h.note && h.note.trim() ? h.note.trim() : '無特殊需求，依吉的寶配方作業';
+          // 相容舊格式（ticketNum）與新格式（qty）
+          const qtyLabel = h.qty ? `${h.qty} 張` : `第 ${h.ticketNum} 張`;
           return `<div class="history-item">
             <div class="history-row1">
-              <span class="history-badge">${h.qty || 1} 張</span>
+              <span class="history-badge">${qtyLabel}</span>
               <span class="history-time">${timeStr}</span>
             </div>
             <div class="history-note"><span class="history-note-label">備註：</span>${escapeHtml(noteText)}</div>
